@@ -54,10 +54,6 @@ RUN export RUSTUP_HOME=/opt/rust \
     && export PATH=$PATH:/opt/rust/bin \
     && rustup target add wasm32-unknown-unknown
 
-ARG BOOST_VERSION="1.74.0"
-ARG BOOST_TARBALL="boost_1_74_0.tar.gz"
-RUN curl -Lo /opt/boost.tar.gz "https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/${BOOST_TARBALL}"
-
 RUN source /opt/emsdk/emsdk_env.sh \
     && echo "export PATH=$PATH:/opt/rust/bin" >> /opt/env.sh \
     && echo "export EMSDK=$EMSDK" >> /opt/env.sh \
@@ -65,7 +61,6 @@ RUN source /opt/emsdk/emsdk_env.sh \
     && echo "export EMSCRIPTEN=$EMSCRIPTEN" >> /opt/env.sh \
     && echo "export CARGO_HOME=/opt/rust" >> /opt/env.sh \
     && echo "export RUSTUP_HOME=/opt/rust" >> /opt/env.sh \
-    && echo "export BOOST_ARCHIVE=/opt/boost.tar.gz" >> /opt/env.sh \
     && echo "source /opt/nvm/nvm.sh" >> /opt/env.sh \
     && printf '#!/bin/bash\nsource /opt/env.sh\nexec env "$@"\n' > /opt/entrypoint.sh \
     && chmod +x /opt/entrypoint.sh
