@@ -22,10 +22,10 @@ runs:
 
         - run: |-
               docker run --rm \
-                  -v ${{ github.workspace }}:/github/workspace/ \
-                  -v ${{ inputs.emscripten_cache_dir }}:/mnt/emscripten_cache/ \
-                  -v ${{ inputs.yarn_cache_dir }}:/mnt/yarn_cache/ \
-                  -v ${{ inputs.ccache_dir }}:/mnt/ccache/ \
+                  -v ${{ github.workspace }}:/github/workspace/:delegated \
+                  -v ${{ inputs.emscripten_cache_dir }}:/mnt/emscripten_cache/:delegated \
+                  -v ${{ inputs.yarn_cache_dir }}:/mnt/yarn_cache/:delegated \
+                  -v ${{ inputs.ccache_dir }}:/mnt/ccache/:delegated \
                   -e EM_CACHE=/mnt/emscripten_cache \
                   -e YARN_CACHE_FOLDER=/mnt/yarn_cache \
                   -e CCACHE_DIR=/mnt/ccache \
