@@ -3,16 +3,6 @@ inputs:
         description: 'Script to be passed to the docker image'
         required: true
 
-    emscripten_cache_dir:
-        description: 'Emscripten cache directory'
-        default: /github/workspace/.emscripten_cache
-    yarn_cache_dir:
-        description: 'Yarn cache directory'
-        default: /github/workspace/.yarn_cache
-    ccache_dir:
-        description: 'Ccache directory'
-        default: /github/workspace/.ccache
-
 runs:
     using: 'composite'
     steps:
@@ -23,12 +13,9 @@ runs:
         - run: |-
               docker run --rm \
                   -v ${{ github.workspace }}:/github/workspace/:delegated \
-                  -v ${{ inputs.emscripten_cache_dir }}:/mnt/emscripten_cache/:delegated \
-                  -v ${{ inputs.yarn_cache_dir }}:/mnt/yarn_cache/:delegated \
-                  -v ${{ inputs.ccache_dir }}:/mnt/ccache/:delegated \
-                  -e EM_CACHE=/mnt/emscripten_cache \
-                  -e YARN_CACHE_FOLDER=/mnt/yarn_cache \
-                  -e CCACHE_DIR=/mnt/ccache \
+                  -e EM_CACHE=/github/workspace/.emscripten_cache \
+                  -e YARN_CACHE_FOLDER=/github/workspace/.yarn_cache \
+                  -e CCACHE_DIR=/github/workspace/.ccache \
                   -e CCACHE_BASEDIR=/github/workspace \
                   "ghcr.io/duckdb/duckdb-wasm-ci-env:$(cat ${{ github.action_path }}/TAG)" \
                   bash -c "${{ inputs.script }}"
