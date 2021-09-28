@@ -63,7 +63,6 @@ RUN source /opt/emsdk/emsdk_env.sh \
     && echo "export EMSDK=$EMSDK" >> /opt/env.sh \
     && echo "export EM_CONFIG=$EM_CONFIG" >> /opt/env.sh \
     && echo "export EMSCRIPTEN=$EMSCRIPTEN" >> /opt/env.sh \
-    && echo "export CARGO_HOME=/opt/rust" >> /opt/env.sh \
     && echo "export RUSTUP_HOME=/opt/rust" >> /opt/env.sh \
     && echo "export BOOST_ARCHIVE=/opt/boost.tar.gz" >> /opt/env.sh \
     && echo "source /opt/nvm/nvm.sh" >> /opt/env.sh \
