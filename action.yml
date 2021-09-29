@@ -1,23 +1,35 @@
 inputs:
-    script:
-        description: 'Script to be passed to the docker image'
-        required: true
+  script:
+    description: "Script to be passed to the docker image"
+    required: true
 
 runs:
-    using: 'composite'
-    steps:
-        - run: |-
-            docker pull "ghcr.io/duckdb/duckdb-wasm-ci-env:$(cat ${{ github.action_path }}/TAG)"
-          shell: bash
+  using: "composite"
+  steps:
+    - name: Pull docker image
+      run: |-
+        docker pull "ghcr.io/duckdb/duckdb-wasm-ci-env:$(cat ${{ github.action_path }}/TAG)"
+      shell: bash
 
-        - run: |-
-              docker run --rm \
-                  -v ${{ github.workspace }}:/github/workspace/ \
-                  -e EM_CACHE=/github/workspace/.emscripten_cache \
-                  -e YARN_CACHE_FOLDER=/github/workspace/.yarn_cache \
-                  -e CARGO_HOME=/github/workspace/.cargo \
-                  -e CCACHE_DIR=/github/workspace/.ccache \
-                  -e CCACHE_BASEDIR=/github/workspace \
-                  "ghcr.io/duckdb/duckdb-wasm-ci-env:$(cat ${{ github.action_path }}/TAG)" \
-                  bash -c "${{ inputs.script }}"
-          shell: bash
+    - name: Fix permissions
+      run: |-
+        sudo chown -R $(id -u):$(id -g) ${{ github.workspace }}
+      shell: bash
+
+    - name: Run script
+      run: |-
+        docker run --rm \
+            -v ${{ github.workspace }}:/github/workspace/:delegated \
+            -e EM_CACHE=/github/workspace/.emscripten_cache \
+            -e YARN_CACHE_FOLDER=/github/workspace/.yarn_cache \
+            -e CARGO_HOME=/github/workspace/.cargo \
+            -e CCACHE_DIR=/github/workspace/.ccache \
+            -e CCACHE_BASEDIR=/github/workspace \
+            "ghcr.io/duckdb/duckdb-wasm-ci-env:$(cat ${{ github.action_path }}/TAG)" \
+            bash -c "${{ inputs.script }}"
+      shell: bash
+
+    - name: Fix permissions
+      run: |-
+        sudo chown -R $(id -u):$(id -g) ${{ github.workspace }}
+      shell: bash
