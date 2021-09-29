@@ -12,7 +12,7 @@ runs:
 
         - run: |-
               docker run --rm \
-                  -v ${{ github.workspace }}:/github/workspace/:delegated \
+                  -v ${{ github.workspace }}:/github/workspace/ \
                   -e EM_CACHE=/github/workspace/.emscripten_cache \
                   -e YARN_CACHE_FOLDER=/github/workspace/.yarn_cache \
                   -e CARGO_HOME=/github/workspace/.cargo \
