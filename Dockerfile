@@ -3,7 +3,7 @@ FROM ubuntu:21.04
 RUN apt-get update -qq \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         tini build-essential git \
-        ccache cmake ninja-build llvm clang clang-format clang-tidy curl python python3 \
+        ccache cmake ninja-build llvm clang clang-format clang-tidy curl python3 \
         bison flex \
         brotli rsync \
         libpthread-stubs0-dev \
@@ -18,7 +18,7 @@ RUN apt-get update -qq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/google.list
 
-ARG EMSDK_VERSION="3.1.1"
+ARG EMSDK_VERSION="3.1.9"
 RUN mkdir -p /opt/emsdk \
     && cd /opt/emsdk \
     && curl -SL https://github.com/emscripten-core/emsdk/archive/${EMSDK_VERSION}.tar.gz | tar -xz --strip-components=1 \
@@ -37,8 +37,8 @@ RUN mkdir -p /opt/emsdk \
 SHELL ["/bin/bash", "-c"]
 
 ENV NVM_DIR=/opt/nvm
-ARG NVM_VERSION="v0.39.0"
-ARG NODE_VERSION="v16.8.0"
+ARG NVM_VERSION="v0.39.1"
+ARG NODE_VERSION="v17.6.0"
 RUN mkdir -p /opt/nvm \
     && ls -lisah /opt/nvm \
     && curl https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash \
@@ -48,7 +48,7 @@ RUN mkdir -p /opt/nvm \
     && nvm use default \
     && npm install --global yarn
 
-ARG RUST_VERSION="1.55.0"
+ARG RUST_VERSION="1.60.0"
 RUN export RUSTUP_HOME=/opt/rust \
     && export CARGO_HOME=/opt/rust \
     && curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain ${RUST_VERSION} -y \
@@ -63,6 +63,7 @@ RUN source /opt/emsdk/emsdk_env.sh \
     && echo "export EMSDK=$EMSDK" >> /opt/env.sh \
     && echo "export EM_CONFIG=$EM_CONFIG" >> /opt/env.sh \
     && echo "export EMSCRIPTEN=$EMSCRIPTEN" >> /opt/env.sh \
+    && echo "export CARGO_HOME=/opt/rust" >> /opt/env.sh \
     && echo "export RUSTUP_HOME=/opt/rust" >> /opt/env.sh \
     && echo "export BOOST_ARCHIVE=/opt/boost.tar.gz" >> /opt/env.sh \
     && echo "export PATH=$PATH:/opt/rust/bin" >> /opt/env.sh \
@@ -71,4 +72,4 @@ RUN source /opt/emsdk/emsdk_env.sh \
     && chmod +x /opt/entrypoint.sh
 
 ENTRYPOINT ["tini", "-v", "--", "/opt/entrypoint.sh"]
-WORKDIR /github/workspace
+WORKDIR /wd
