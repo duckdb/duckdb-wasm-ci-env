@@ -72,4 +72,4 @@ RUN source /opt/emsdk/emsdk_env.sh \
     && chmod +x /opt/entrypoint.sh
 
 ENTRYPOINT ["tini", "-v", "--", "/opt/entrypoint.sh"]
-WORKDIR /wd
+WORKDIR /github/workspace
