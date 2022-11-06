@@ -11,8 +11,9 @@ RUN apt-get update -qq \
         chromium-browser \
         wget gnupg ca-certificates procps libxss1 \
         zip sqlite3 \
-        snapd \
-    && snap install firefox \
+        software-properties-common \
+    && add-apt-repository ppa:mozillateam/ppa \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y firefox \
     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
     && apt-get update \
