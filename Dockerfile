@@ -24,7 +24,7 @@ RUN apt-get update -qq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/google.list
 
-ARG EMSDK_VERSION="3.1.24"
+ARG EMSDK_VERSION="3.1.46"
 RUN mkdir -p /opt/emsdk \
     && cd /opt/emsdk \
     && curl -SL https://github.com/emscripten-core/emsdk/archive/${EMSDK_VERSION}.tar.gz | tar -xz --strip-components=1 \
@@ -53,7 +53,7 @@ RUN mkdir -p /opt/nvm \
     && nvm use default \
     && npm install --global yarn
 
-ARG RUST_VERSION="1.64.0"
+ARG RUST_VERSION="1.67.0"
 RUN export RUSTUP_HOME=/opt/rust \
     && export CARGO_HOME=/opt/rust \
     && curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain ${RUST_VERSION} -y \
